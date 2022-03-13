@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="Form" layout="LayeredLayout" layeredLayoutPreferredWidthMM="0.0" layeredLayoutPreferredHeightMM="0.0"  autolayout="true" title="MyForm" scrollableY="true" name="MyForm">
+  <component type="Container" layout="TableLayout" tableLayoutRows="3" tableLayoutColumns="3" tableLayoutGrowHorizontally="false"  preferredSize="84.32103mm 60.108364mm" name="Table_Layout">
+    <layoutConstraint insets="22.391857% -6.7727737mm auto auto" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+    <component type="Label" text="Name" name="Label">
+      <layoutConstraint row="0" column="0" height="-1" width="-1" align="-1" valign="-1" spanHorizontal="1" spanVertical="1" />
+    </component>
+    <component type="TextField" name="TextField">
+      <layoutConstraint row="0" column="1" height="-1" width="-1" align="-1" valign="-1" spanHorizontal="1" spanVertical="1" />
+    </component>
+    <component type="Label" text="Email" name="Label">
+      <layoutConstraint row="1" column="0" height="-1" width="-1" align="-1" valign="-1" spanHorizontal="1" spanVertical="1" />
+    </component>
+    <component type="TextField" name="TextField">
+      <layoutConstraint row="1" column="1" height="-1" width="-1" align="-1" valign="-1" spanHorizontal="1" spanVertical="1" />
+    </component>
+    <component type="Label" text="Phone" name="Label">
+      <layoutConstraint row="2" column="0" height="-1" width="-1" align="-1" valign="-1" spanHorizontal="1" spanVertical="1" />
+    </component>
+    <component type="TextField" name="TextField">
+      <layoutConstraint row="2" column="1" height="-1" width="-1" align="-1" valign="-1" spanHorizontal="1" spanVertical="1" />
+    </component>
+    <component type="Button" text="Add" styles="bgType:none;" name="Button" actionEvent="true">
+      <layoutConstraint row="2" column="2" height="-1" width="-1" align="-1" valign="-1" spanHorizontal="1" spanVertical="1" />
+    </component>
+  </component>
+</component>
