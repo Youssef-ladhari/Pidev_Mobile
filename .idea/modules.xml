@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Pidev.iml" filepath="$PROJECT_DIR$/Pidev.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Pidev_Mobile.iml" filepath="$PROJECT_DIR$/Pidev_Mobile.iml" />
     </modules>
   </component>
 </project>

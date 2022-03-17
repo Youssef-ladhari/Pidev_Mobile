@@ -114,15 +114,17 @@ public class LoginForm extends Form {
         Button loginButton = new Button("LOGIN");
         loginButton.setUIID("LoginButton");
         loginButton.addActionListener(e -> {
+            var user =new User();
+            user.setId(1);
+            user.setUsername("DUMMY");
+            user.setEmail(login.getText());
 
-            User user=authentificationService.login(login.getText(),password.getText());
             if (user!=null){
                 Toolbar.setGlobalToolbar(false);
                 new WalkthruForm(theme,user).show();
                 Toolbar.setGlobalToolbar(true);
             }
         });
-        
         Button createNewAccount = new Button("CREATE NEW ACCOUNT");
         createNewAccount.setUIID("CreateNewAccountButton");
         createNewAccount.addActionListener(evt -> {
