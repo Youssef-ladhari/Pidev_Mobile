@@ -7,14 +7,18 @@ public class User {
     private String password;
     private String confirm_password;
     private String roles;
+    private String telephone;
+    private String address;
+
 
 
     public User(){}
-    public User(int id,String username,String email,String roles){
+    public User(int id, String username, String email, String roles, String address){
         this.id=id;
         this.username=username;
         this.email=email;
         this.roles=roles;
+        this.address = address;
     }
 
     public int getId() {
@@ -64,14 +68,34 @@ public class User {
     public void setConfirm_password(String confirm_password) {
         this.confirm_password = confirm_password;
     }
-
     @Override
     public String toString() {
-        String s = '{' +
-                "\"email\":\"" + email + "\"," +
-                "\"username\":\"" + username + "\"," +
-                "\"password\":\"" + password + "\"," +
-                "\"confirm_password\":\"" + confirm_password + "\"}";
-        return s;
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", confirm_password='" + confirm_password + '\'' +
+                ", roles='" + roles + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
 }

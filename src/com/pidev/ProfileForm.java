@@ -36,8 +36,10 @@ import com.pidev.entities.User;
  * @author Shai Almog
  */
 public class ProfileForm extends SideMenuBaseForm {
+    private User user;
     public ProfileForm(Resources res, User user) {
-        super(BoxLayout.y());
+        super(BoxLayout.y(),user);
+        this.user=user;
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
         Image profilePic = res.getImage("user-picture.jpg");
@@ -85,6 +87,14 @@ public class ProfileForm extends SideMenuBaseForm {
         addButtonBottom(arrowDown, "Design app illustrations", 0x5ae29d, false);
         addButtonBottom(arrowDown, "Javascript training ", 0x4dc2ff, false);
         addButtonBottom(arrowDown, "Surprise Party for Matt", 0xffc06f, false);
+        Container contUsername= (FlowLayout.encloseIn(
+                new TextField("","Username"),
+                new TextField("","Email"),
+                new TextField("","Password",20,TextArea.PASSWORD),
+                new TextField("","Confirm password",20,TextArea.PASSWORD)
+
+        ));
+        add(FlowLayout.encloseIn(contUsername));
         setupSideMenu(res);
     }
     
@@ -116,6 +126,6 @@ public class ProfileForm extends SideMenuBaseForm {
 
     @Override
     protected void showOtherForm(Resources res) {
-        new StatsForm(res).show();
+        new StatsForm(res,this.user).show();
     }
 }
