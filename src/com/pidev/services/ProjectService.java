@@ -64,7 +64,7 @@ Project p = new Project();
             @Override
             public void actionPerformed(NetworkEvent evt) {
                  projects =parseProjects( new String(req.getResponseData()));
-                System.out.println( new String(req.getResponseData()));
+
                 req.removeResponseListener(this);
             }
         });
@@ -79,24 +79,20 @@ Project p = new Project();
         try {
 
 
-             /* JSONParser j = new JSONParser();
+              JSONParser j = new JSONParser();
             Map<String,Object> projectsListJson =j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
 
             List<Map<String,Object>> list = (List<Map<String,Object>>)projectsListJson.get("root");
             for(Map<String,Object> obj : list){
                 Project p = new Project();
                 int i = 0 ;
-                System.out.println(i++ + obj.toString());
-                p.setId(Integer.parseInt(obj.get("id").toString()));
+                System.out.println("iii" +i++ +obj.get("name").toString());
+                p.setId( (int) Double.parseDouble(obj.get("id").toString()));
                 p.setName(obj.get("name").toString());
+                p.setImage(obj.get("image").toString());
                 projs.add(p);
-            }*/
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Project>>(){}.getType();
-            List<Project> contactList = gson.fromJson(jsonString, type);
-            for (Project contact : contactList){
-                Log.i("Contact Details", contact.id + "-" + contact.name + "-" + contact.email);
             }
+
 
         } catch (IOException ex) {
 
