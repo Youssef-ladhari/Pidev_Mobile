@@ -47,13 +47,14 @@ public class MyApplication {
     }
     
     public void start() {
+
         if(current != null){
             current.show();
             return;
         }
         try {
-            new LoginForm(theme).show();
-        } catch (IOException e) {
+            new ProjectShowAll(theme).show();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
