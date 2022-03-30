@@ -115,7 +115,11 @@ public class LoginForm extends Form {
         loginButton.setUIID("LoginButton");
         loginButton.addActionListener(e -> {
 
-            User user=authentificationService.login(login.getText(),password.getText());
+            var user =new User();
+            user.setId(1);
+            user.setUsername("DUMMY");
+            user.setEmail(login.getText());
+
             if (user!=null){
                 Toolbar.setGlobalToolbar(false);
                 new WalkthruForm(theme,user).show();
