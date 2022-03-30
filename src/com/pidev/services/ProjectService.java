@@ -101,7 +101,7 @@ Project p = new Project();
 
 
                 p.setName(  obj.get("name").toString());
-
+                p.setPeriode((int) Double.parseDouble(obj.get("periode").toString()));
                 p.setPrice(Float.parseFloat(obj.get("price").toString()));
                 p.setImage(obj.get("image").toString());
               //  System.out.println("----"+obj.get("creator").toString());
@@ -113,8 +113,12 @@ Project p = new Project();
                LinkedHashMap<String,Object> lc = (LinkedHashMap <String,Object>)obj.get("creator");
                 User creator = new User();
                 creator.setUsername(lc.get("username").toString());
+
+                creator.setEmail(lc.get("email").toString());
+
                 creator.setId((int) Double.parseDouble(lc.get("id").toString()));
                 p.setCreator(creator);
+
            //    System.out.println( lc.get("id"));
 
 
@@ -129,7 +133,7 @@ Project p = new Project();
                 User u = new User();
                 u.setId((int) Double.parseDouble(lu.get("id").toString()));
                 u.setUsername(lu.get("username").toString());
-
+                    u.setUsername(lu.get("email").toString());
                 userss.add(u);
                 }
 

@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pidev;
+package com.pidev.gui;
 
 import com.codename1.components.*;
 import com.codename1.ui.*;
@@ -36,6 +36,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 
+import com.pidev.SideMenuBaseForm;
 import com.pidev.entities.Project;
 import com.pidev.gui.ShowNormalProject;
 import com.pidev.services.ProjectService;
@@ -100,6 +101,7 @@ this.setScrollable(true);
 
 
         Container item = new Container(BoxLayout.y());
+        item.setScrollableY(true);
 
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
@@ -161,22 +163,23 @@ try {
         ta.setUIID("NewsTopLine");
         ta.setEditable(false);
         ta.setAlignment(Component.CENTER);
-
-        Label Lprice = new Label(price + " Cost  ", "NewsBottomLine");
+        Label Lprice = new Label();
+        Lprice.setUIID("NewsBottomLine");
+        FontImage.setMaterialIcon(Lprice, FontImage.MATERIAL_ATTACH_MONEY);
+if (p.getPrice()==0.0){
+      Lprice.setText("Free");
         Lprice.setTextPosition(RIGHT);
-        if (!(price == 0)) {
-            FontImage.setMaterialIcon(Lprice, FontImage.MATERIAL_FAVORITE);
-        } else {
-            Style s = new Style(Lprice.getUnselectedStyle());
-            s.setFgColor(0xff2d55);
-            FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
-            Lprice.setIcon(heartImage);
-        }
-        Label Lnumber = new Label(members + " Members", "NewsBottomLine");
+
+
+
+        }else {
+    Lprice.setText(p.getPrice().toString());
+}
+        Label Lnumber = new Label( p.getPeriode()+" J/H", "NewsBottomLine");
         FontImage.setMaterialIcon(Lnumber, FontImage.MATERIAL_CHAT);
 
         Label Lcategory = new Label("Category : " +p.getCategory().getName(),"NewsBottomLine");
-        FontImage.setMaterialIcon(Lprice, FontImage.MATERIAL_CHAT);
+      //  FontImage.setMaterialIcon(Lprice, FontImage.MATERIAL_CHAT);
 
         Button ReadMore = new Button("Read More");
 

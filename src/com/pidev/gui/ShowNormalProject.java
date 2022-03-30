@@ -5,24 +5,39 @@ import com.codename1.ui.*;
 import com.codename1.ui.Button;
 
 import com.codename1.ui.Container;
+import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.plaf.Style;
+import com.codename1.ui.table.TableLayout;
 import com.codename1.ui.util.Resources;
 
 import com.pidev.SideMenuBaseForm;
 import com.pidev.entities.Project;
 
+import java.awt.*;
+import java.util.Base64;
+
 public class ShowNormalProject  extends SideMenuBaseForm {
-    public ShowNormalProject(Resources res, Project project) {
+    public ShowNormalProject(Resources res, Project p) {
         super(BoxLayout.y());
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
+
         Image profilePic = res.getImage("user-picture.jpg");
+        try{byte[] b = Base64.getDecoder().decode(p.getImage().getBytes("UTF-8"));
+            EncodedImage imge = EncodedImage.create(b);
+            profilePic = imge;
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
         Image mask = res.getImage("round-mask.png");
         profilePic = profilePic.fill(mask.getWidth(), mask.getHeight());
         Label profilePicLabel = new Label(profilePic, "ProfilePicTitle");
@@ -31,42 +46,61 @@ public class ShowNormalProject  extends SideMenuBaseForm {
         menuButton.setUIID("Title");
         FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
         menuButton.addActionListener(e -> getToolbar().openSideMenu());
+        Container Pricelab = BoxLayout.encloseY();
+if (p.getPrice()==0.0 ){
+    Label lp =  new Label("Free", "CenterTitle");
 
-        Container remainingTasks = BoxLayout.encloseY(
-                new Label("12", "CenterTitle"),
-                new Label("remaining tasks", "CenterSubTitle")
+     Pricelab.add(
+                new Label("Price", "CenterSubTitle")
         );
-        remainingTasks.setUIID("RemainingTasks");
-        Container completedTasks = BoxLayout.encloseY(
-                new Label("32", "CenterTitle"),
-                new Label("completed tasks", "CenterSubTitle")
+     Pricelab.add(lp);
+
+}
+else {
+   Pricelab.add(
+        new Label("Price", "CenterSubTitle")
+
+   );Pricelab.add(  new Label(p.getPrice().toString() + " DT", "CenterTitle"));
+    }
+        Pricelab.setUIID("RemainingTasks");
+        Container Periodelab = BoxLayout.encloseY(
+                new Label("Duration ", "CenterSubTitle"),
+                new Label(p.getPeriode().toString() +" J/H", "CenterTitle")
         );
-        completedTasks.setUIID("CompletedTasks");
+        Periodelab.setUIID("CompletedTasks");
+
+        Container Ltime = new Container(new BorderLayout());
+    Label lt = new Label("Duration" + p.getPeriode());
+        Ltime.add(RIGHT, lt);
+
 
         Container titleCmp = BoxLayout.encloseY(
                 FlowLayout.encloseIn(menuButton),
                 BorderLayout.centerAbsolute(
                         BoxLayout.encloseY(
-                                new Label("project.getName()", "Title"),
-                                new Label("project.get", "SubTitle")
+                                new Label(p.getName(), "Title"),
+                                new Label(p.getCategory().getName(), "SubTitle"),
+                                new Label(  p.getPeriode().toString() +" J/H" ,"SubTitle")
                         )
                 ).add(BorderLayout.WEST, profilePicLabel),
-                GridLayout.encloseIn(2, remainingTasks, completedTasks)
+                GridLayout.encloseIn(2, Pricelab, Periodelab)
         );
 
         FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ADD);
         fab.getAllStyles().setMarginUnit(Style.UNIT_TYPE_PIXELS);
-        fab.getAllStyles().setMargin(BOTTOM, completedTasks.getPreferredH() - fab.getPreferredH() / 2);
+        fab.getAllStyles().setMargin(BOTTOM, Periodelab.getPreferredH() - fab.getPreferredH() / 2);
         tb.setTitleComponent(fab.bindFabToContainer(titleCmp, CENTER, BOTTOM));
 
-        add(new Label("Today", "TodayTitle"));
+        Form Tab = new Form("Collaborators", new TableLayout(2, 2));
 
-        FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
 
-        addButtonBottom(arrowDown, "Finish landing page concept", 0xd997f1, true);
-        addButtonBottom(arrowDown, "Design app illustrations", 0x5ae29d, false);
-        addButtonBottom(arrowDown, "Javascript training ", 0x4dc2ff, false);
-        addButtonBottom(arrowDown, "Surprise Party for Matt", 0xffc06f, false);
+
+        this.add(Tab);
+
+
+
+
+
         setupSideMenu(res);
     }
 
@@ -89,7 +123,7 @@ public class ShowNormalProject  extends SideMenuBaseForm {
         if(first) {
             y = height / 6 + 1;
         }
-        g.drawLine(height / 2, y, height / 2, height);
+        g.drawLine(10, y, 10, 10);
         g.drawLine(height / 2 - 1, y, height / 2 - 1, height);
         g.setColor(color);
         g.fillArc(height / 2 - height / 4, height / 6, height / 2, height / 2, 0, 360);
