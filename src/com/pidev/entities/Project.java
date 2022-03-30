@@ -1,16 +1,19 @@
 package com.pidev.entities;
 
+
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Project {
 
 Integer id ;
-Integer creator_id ;
-Integer category_id;
+User creator ;
+Category category;
 String name;
+ArrayList<User> users;
 String description;
 Integer periode;
-Integer price;
+Float price;
 String image;
 Integer state;
 Array blocked;
@@ -20,10 +23,10 @@ Array blocked;
     public Project() {
     }
 
-    public Project(Integer id, Integer creator_id, Integer category_id, String name, String description, Integer periode, Integer price, String image, Integer state, Array blocked) {
+    public Project(Integer id, User creator, Category category, String name, String description, Integer periode, Float price, String image, Integer state, Array blocked,ArrayList<User> users) {
         this.id = id;
-        this.creator_id = creator_id;
-        this.category_id = category_id;
+        this.creator = creator;
+        this.category = category;
         this.name = name;
         this.description = description;
         this.periode = periode;
@@ -31,14 +34,13 @@ Array blocked;
         this.image = image;
         this.state = state;
         this.blocked = blocked;
+        this.users=users;
     }
 
     @Override
     public String toString() {
         return "Project{" +
                 "id=" + id +
-                ", creator_id=" + creator_id +
-                ", category_id=" + category_id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", periode=" + periode +
@@ -57,20 +59,20 @@ Array blocked;
         this.id = id;
     }
 
-    public Integer getCreator_id() {
-        return creator_id;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setCreator_id(Integer creator_id) {
-        this.creator_id = creator_id;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
-    public Integer getCategory_id() {
-        return category_id;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getName() {
@@ -97,11 +99,11 @@ Array blocked;
         this.periode = periode;
     }
 
-    public Integer getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -129,5 +131,11 @@ Array blocked;
         this.blocked = blocked;
     }
 
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
+    }
 }

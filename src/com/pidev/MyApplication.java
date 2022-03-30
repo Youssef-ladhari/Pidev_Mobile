@@ -53,7 +53,8 @@ public class MyApplication {
             return;
         }
         try {
-            new ProjectShowAll(theme).show();
+         new ProjectShowAll(theme).show();
+         //   new LoginForm(theme).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

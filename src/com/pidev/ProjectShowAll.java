@@ -19,97 +19,140 @@
 
 package com.pidev;
 
-import com.codename1.components.ImageViewer;
-import com.codename1.components.ScaleImageLabel;
-import com.codename1.components.SpanLabel;
-import com.codename1.components.ToastBar;
+import com.codename1.components.*;
 import com.codename1.ui.*;
+import com.codename1.ui.Button;
+import com.codename1.ui.Component;
+import com.codename1.ui.Container;
+import com.codename1.ui.Graphics;
+import com.codename1.ui.Image;
+import com.codename1.ui.Label;
+import com.codename1.ui.TextArea;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.*;
+import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 
 import com.pidev.entities.Project;
+import com.pidev.gui.ShowNormalProject;
 import com.pidev.services.ProjectService;
 
-import javax.swing.*;
+import com.codename1.ui.Graphics;
+
 import javax.swing.ButtonGroup;
 
+
+import java.awt.*;
+import java.awt.Font;
+import java.awt.Stroke;
 import java.awt.color.ColorSpace;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ImageObserver;
+import java.awt.image.RenderedImage;
+import java.awt.image.renderable.RenderableImage;
+import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+
+
 
 
 /**
- *
  * @author Shai Almog
  */
 public class ProjectShowAll extends SideMenuBaseForm {
 
 
-    EncodedImage img;
+    EncodedImage imge;
+    Resources res ;
+    public ProjectShowAll(Resources ress) {
+        super(new BorderLayout());
+        res=ress;
+        Toolbar tb = getToolbar();
+        tb.setTitleCentered(false);
+        Button menuButton = new Button("");
+        menuButton.setUIID("Title");
+        FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
+        menuButton.addActionListener(e -> getToolbar().openSideMenu());
+this.setScrollable(true);
 
-    public ProjectShowAll(Resources res) {
-    super(new BorderLayout());
+        Container T1 = new Container(new BorderLayout());
 
-    Container list = new Container(BoxLayout.y());
-    list.setScrollableY(true);
+        T1.add(  LEFT,FlowLayout.encloseIn(menuButton));
+        Label title = new Label("Projects");
+        title.setUIID("Title");
+        T1.add(CENTER,title);
+
+
+
+        tb.setTitleComponent(T1);
+        setupSideMenu(res);
+        /////
+
+
+        Container item = new Container(BoxLayout.y());
+
+        Container list = new Container(BoxLayout.y());
+        list.setScrollableY(true);
         ArrayList<Project> proj = ProjectService.getInstance().getAllTasks();
+        Dimension d = new Dimension(Display.getInstance().getDisplayHeight(), Display.getInstance().getDisplayWidth());
+        item.setSize(d);
 
 
-
-list.add("aaaaaaaaaaaaa");
 
         try {
 
-            String base64ImageData = "";
-            byte[] b = Base64.getDecoder().decode(proj.get(0).getImage().getBytes("UTF-8"));
 
-             img =  EncodedImage.create(b);
-            ImageViewer iv = new ImageViewer(img);
-
-            Container item = new Container(BoxLayout.x());
+            for (Project p : proj) {
 
 
 
-            item.add(addButton(img, "Morbi per tincidunt tellus sit of amet eros laoreet.", false, 26, 32));
-            item.add(addButton(img, "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21));
-            item.add(addButton(img, "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15));
-            item.add(addButton(img, "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9));
+               // System.out.println(p);
+                item.add(addButton( p));
 
-list.add(item);
-        }catch (Exception e){
+
+            }
+        } catch (Exception e) {
             System.out.println(e);
         }
 
 
-this.add(CENTER,list);
+        this.add(CENTER, item);
 
 
+        Label spacer1 = new Label();
+        Label spacer2 = new Label();
 
-
-    Label spacer1 = new Label();
-    Label spacer2 = new Label();
-
-    ButtonGroup bg = new ButtonGroup();
-    int size = Display.getInstance().convertToPixels(1);
-    Image unselectedWalkthru = Image.createImage(size, size, 0);
-
-
-
-
-
-
-
-
-
-
+        ButtonGroup bg = new ButtonGroup();
+        int size = Display.getInstance().convertToPixels(1);
+        Image unselectedWalkthru = Image.createImage(size, size, 0);
 
 
     }
-    private Component addButton(Image img, String title, boolean liked, int likeCount, int commentCount) {
-        int height = Display.getInstance().convertToPixels(11.5f);
-        int width = Display.getInstance().convertToPixels(14f);
+
+    private Component addButton(Project p ) {
+
+try {
+    byte[] b = Base64.getDecoder().decode(p.getImage().getBytes("UTF-8"));
+    imge = EncodedImage.create(b);
+}catch (Exception e){
+    System.out.println(e);
+}
+        Image img = imge;
+        String title = p.getName();
+        Float price = p .getPrice();
+        int members = 0;
+        int height = Display.getInstance().convertToPixels(20f);
+        int width = Display.getInstance().convertToPixels(20f);
         Button image = new Button(img.fill(width, height));
         image.setUIID("Label");
         Container cnt = BorderLayout.west(image);
@@ -117,29 +160,60 @@ this.add(CENTER,list);
         TextArea ta = new TextArea(title);
         ta.setUIID("NewsTopLine");
         ta.setEditable(false);
+        ta.setAlignment(Component.CENTER);
 
-        Label likes = new Label(likeCount + " Likes  ", "NewsBottomLine");
-        likes.setTextPosition(RIGHT);
-        if(!liked) {
-            FontImage.setMaterialIcon(likes, FontImage.MATERIAL_FAVORITE);
+        Label Lprice = new Label(price + " Cost  ", "NewsBottomLine");
+        Lprice.setTextPosition(RIGHT);
+        if (!(price == 0)) {
+            FontImage.setMaterialIcon(Lprice, FontImage.MATERIAL_FAVORITE);
         } else {
-            Style s = new Style(likes.getUnselectedStyle());
+            Style s = new Style(Lprice.getUnselectedStyle());
             s.setFgColor(0xff2d55);
             FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
-            likes.setIcon(heartImage);
+            Lprice.setIcon(heartImage);
         }
-        Label comments = new Label(commentCount + " Comments", "NewsBottomLine");
-        FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
+        Label Lnumber = new Label(members + " Members", "NewsBottomLine");
+        FontImage.setMaterialIcon(Lnumber, FontImage.MATERIAL_CHAT);
+
+        Label Lcategory = new Label("Category : " +p.getCategory().getName(),"NewsBottomLine");
+        FontImage.setMaterialIcon(Lprice, FontImage.MATERIAL_CHAT);
+
+        Button ReadMore = new Button("Read More");
+
+        Label Lcreater = new Label("Creator : " + p.getCreator().getUsername(), "NewsBottomLine");
 
 
-        cnt.add(BorderLayout.CENTER,
-                BoxLayout.encloseY(
-                        ta,
-                        BoxLayout.encloseX(likes, comments)
-                ));
+        Container L1 = new Container(new BorderLayout());
 
-        image.addActionListener(e -> ToastBar.showMessage(title, FontImage.MATERIAL_INFO));
+        L1.add(LEFT, ta);
+        L1.add(RIGHT, ReadMore);
+        Container L2 = new Container(new BorderLayout());
+
+        L2.add(LEFT,Lcategory);
+        Container L3 = new Container(new BorderLayout());
+        L3.add(LEFT,Lcreater);
+        Container L4 = new Container(new BorderLayout());
+        L4.add(LEFT,Lprice);
+        L4.add(RIGHT,Lnumber);
+
+        cnt.add(BorderLayout.CENTER, BoxLayout.encloseY(
+                L1,
+                L2,
+                L3,
+                L4
+        ));
+
+      //  cnt.add(s);
+//       Container line = new Container();
+////        line.setSize(Display.getInstance().convertToPixels(1f),Display.getInstance().convertToPixels(100f));
+////        line.setBackground(Color.GRAY);
+//        //cnt.add(line);
+//        line.setSize(new Dimension(Display.getInstance().convertToPixels(1f),Display.getInstance().convertToPixels(100f)));
+        image.addActionListener((e)->{new ShowNormalProject(res,p).show();
+              System.out.println("IMMMAGE");});
+
+        ReadMore.addActionListener((e)->{});
+
         return cnt;
     }
-
 }

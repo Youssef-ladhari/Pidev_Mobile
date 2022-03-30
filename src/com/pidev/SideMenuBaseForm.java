@@ -23,6 +23,7 @@ import com.codename1.ui.*;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
+import com.pidev.entities.User;
 
 import java.io.IOException;
 
@@ -61,8 +62,8 @@ public abstract class SideMenuBaseForm extends Form {
         
         getToolbar().addComponentToSideMenu(sidemenuTop);
         getToolbar().addMaterialCommandToSideMenu("  Dashboard", FontImage.MATERIAL_DASHBOARD,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Activity", FontImage.MATERIAL_TRENDING_UP,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Tasks", FontImage.MATERIAL_ACCESS_TIME,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Activity", FontImage.MATERIAL_TRENDING_UP,  e -> new ProfileForm(res,new User()).show());
+
         // MY WORK ----------------------------------------------------------------------------------
         getToolbar().addMaterialCommandToSideMenu("  Projects", FontImage.MATERIAL_ACCESS_TIME,  e ->  new ProjectShowAll(res).show());
 
