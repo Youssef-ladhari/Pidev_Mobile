@@ -38,6 +38,7 @@ import com.codename1.ui.util.Resources;
 
 import com.pidev.SideMenuBaseForm;
 import com.pidev.entities.Project;
+import com.pidev.entities.User;
 import com.pidev.gui.ShowNormalProject;
 import com.pidev.services.ProjectService;
 
@@ -72,12 +73,12 @@ import java.util.Map;
  */
 public class ProjectShowAll extends SideMenuBaseForm {
 
-
+User userr;
     EncodedImage imge;
     Resources res ;
-    public ProjectShowAll(Resources ress) {
-        super(new BorderLayout());
-
+    public ProjectShowAll(Resources ress, User user) {
+        super(new BorderLayout(),user);
+userr=user;
         res=ress;
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
@@ -224,7 +225,7 @@ if (p.getPrice()==0.0){
 ////        line.setBackground(Color.GRAY);
 //        //cnt.add(line);
 //        line.setSize(new Dimension(Display.getInstance().convertToPixels(1f),Display.getInstance().convertToPixels(100f)));
-        image.addActionListener((e)->{new ShowNormalProject(res,p).show();
+        image.addActionListener((e)->{new ShowNormalProject(res,p,userr).show();
               System.out.println("IMMMAGE");});
 
         ReadMore.addActionListener((e)->{});

@@ -27,8 +27,8 @@ import java.awt.*;
 import java.util.Base64;
 
 public class ShowNormalProject  extends SideMenuBaseForm {
-    public ShowNormalProject(Resources ress, Project p) {
-        super(BoxLayout.y());
+    public ShowNormalProject(Resources ress, Project p,User user) {
+        super(BoxLayout.y(),user);
         Resources res=ress;
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
@@ -101,7 +101,7 @@ else {
            Label l = new Label(u.getEmail());
            Label b = new Label("Block");
            b.addPointerPressedListener((e)-> {
-               new ShowNormalProject(res, ProjectService.getInstance().getProjectById(p.getId())).show();
+               new ShowNormalProject(res, ProjectService.getInstance().getProjectById(p.getId()),user).show();
 
            });
 

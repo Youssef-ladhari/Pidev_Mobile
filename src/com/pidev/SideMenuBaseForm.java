@@ -24,6 +24,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
 import com.pidev.entities.User;
+import com.pidev.gui.ProfileUser;
 import com.pidev.gui.ProjectShowAll;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ import java.io.IOException;
  * @author Shai Almog
  */
 public abstract class SideMenuBaseForm extends Form {
+
+    private User user;
 
     public SideMenuBaseForm(String title, Layout contentPaneLayout) {
         super(title, contentPaneLayout);
@@ -46,8 +49,9 @@ public abstract class SideMenuBaseForm extends Form {
     public SideMenuBaseForm() {
     }
 
-    public SideMenuBaseForm(Layout contentPaneLayout) {
+    public SideMenuBaseForm(Layout contentPaneLayout, User user) {
         super(contentPaneLayout);
+        this.user = user;
     }
     
     public void setupSideMenu(Resources res) {
@@ -63,17 +67,15 @@ public abstract class SideMenuBaseForm extends Form {
         
         getToolbar().addComponentToSideMenu(sidemenuTop);
         getToolbar().addMaterialCommandToSideMenu("  Dashboard", FontImage.MATERIAL_DASHBOARD,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Activity", FontImage.MATERIAL_TRENDING_UP,  e -> new ProfileForm(res,new User()).show());
-
+        getToolbar().addMaterialCommandToSideMenu("  Activity", FontImage.MATERIAL_TRENDING_UP,  e -> showOtherForm(res));
         // MY WORK ----------------------------------------------------------------------------------
-        getToolbar().addMaterialCommandToSideMenu("  Projects", FontImage.MATERIAL_ACCESS_TIME,  e ->  new ProjectShowAll(res).show());
+        getToolbar().addMaterialCommandToSideMenu("  Projects", FontImage.MATERIAL_ACCESS_TIME,  e ->  new ProjectShowAll(res,user).show());
 
 
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-
         getToolbar().addMaterialCommandToSideMenu("  Account Settings", FontImage.MATERIAL_SETTINGS,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Profile", FontImage.MATERIAL_SETTINGS,  e -> new ProfileUser(res, user).show());
         getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> {
             try {
                 new LoginForm(res).show();

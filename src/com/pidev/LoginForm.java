@@ -24,20 +24,11 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pidev.entities.User;
 import com.pidev.gui.SignUpForm;
 import com.pidev.services.AuthentificationService;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 
 /**
  * The Login form
@@ -50,7 +41,7 @@ public class LoginForm extends Form {
         setUIID("LoginForm");
         Container welcome = FlowLayout.encloseCenter(
                 new Label("Welcome, ", "WelcomeWhite"),
-                new Label("Jennifer", "WelcomeBlue")
+                new Label("Anonymous", "WelcomeBlue")
         );
         
         getTitleArea().setUIID("Container");
@@ -114,17 +105,15 @@ public class LoginForm extends Form {
         Button loginButton = new Button("LOGIN");
         loginButton.setUIID("LoginButton");
         loginButton.addActionListener(e -> {
-            var user =new User();
-            user.setId(1);
-            user.setUsername("DUMMY");
-            user.setEmail(login.getText());
 
+            User user=authentificationService.login(login.getText(),password.getText());
             if (user!=null){
                 Toolbar.setGlobalToolbar(false);
                 new WalkthruForm(theme,user).show();
                 Toolbar.setGlobalToolbar(true);
             }
         });
+        
         Button createNewAccount = new Button("CREATE NEW ACCOUNT");
         createNewAccount.setUIID("CreateNewAccountButton");
         createNewAccount.addActionListener(evt -> {

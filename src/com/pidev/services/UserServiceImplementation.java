@@ -11,12 +11,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-public class AuthentificationService {
+public class UserServiceImplementation {
 
-    public User login(String login, String password) {
-        var url = "http://localhost:8000/loginJson";
+    public User modifyProfile(User user) {
+        var url = "http://localhost:8000/api/v1/profile";
         HttpURLConnection con = null;
-        User user = null;
         try {
             JSONParser js = new JSONParser();
             var myurl = new URL(url);
@@ -26,7 +25,16 @@ public class AuthentificationService {
             con.setRequestProperty("Agent", "mobile");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
-            String jsonInputString = "{\"username\": \"" + login + "\", \"password\": \"" + password + "\"}";
+            /*String jsonInputString = "{\"username\": \"" + user.getUsername() + "\"," +
+                    " \"email\": \"" + user.getEmail() + "\","+
+                    " \"Telephone\": \"" + user.getTelephone() + "\","+
+                    " \"address\": \"" + user.getAddress() + "\"}";*/
+            String jsonInputString="{\n" +
+                    "  \"email\": \""+user.getEmail()+"\",\n" +
+                    "  \"username\": \""+ user.getUsername()+"\",\n" +
+                    "  \"Telephone\":\""+user.getTelephone()+"\",\n" +
+                    "  \"address\":\""+user.getAddress()+"\"\n" +
+                    "}";
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
                 os.write(input, 0, input.length);
@@ -54,37 +62,6 @@ public class AuthentificationService {
         } catch (Exception e) {
             e.printStackTrace();
             return user;
-        }
-    }
-    public Boolean signUp(User user) {
-        JSONParser js = new JSONParser();
-        var url = "http://localhost:8000/signupJson";
-        HttpURLConnection con = null;
-        try {
-            var myurl = new URL(url);
-            con = (HttpURLConnection) myurl.openConnection();
-            con.setDoOutput(true);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Agent", "mobile");
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            try (OutputStream os = con.getOutputStream()) {
-                byte[] input = user.toString().getBytes("utf-8");
-                os.write(input, 0, input.length);
-            }
-            try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                StringBuilder response = new StringBuilder();
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-                System.out.println(response.toString());
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
     }
 }

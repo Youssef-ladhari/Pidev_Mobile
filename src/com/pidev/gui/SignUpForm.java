@@ -1,6 +1,11 @@
 package com.pidev.gui;
 
 import com.codename1.ui.*;
+import com.codename1.ui.Button;
+import com.codename1.ui.Component;
+import com.codename1.ui.Container;
+import com.codename1.ui.TextArea;
+import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
@@ -8,6 +13,7 @@ import com.pidev.LoginForm;
 import com.pidev.entities.User;
 import com.pidev.services.AuthentificationService;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,11 +23,20 @@ public class SignUpForm extends Form {
         super(BoxLayout.y());
         AuthentificationService authentificationService=new AuthentificationService();
         Container container= new Container(BoxLayout.y());
+
+
+        TextField tfu = new TextField("","Username");
+        TextField tfe =       new TextField("","Email");
+        TextField tfp =       new TextField("","Password",20,TextArea.PASSWORD);
+        TextField tfcp =       new TextField("","Confirm password",20,TextArea.PASSWORD);
+
+        tfu.getStyle().setFgColor(Color.BLACK.getRGB());
+        tfe.getStyle().setFgColor(Color.BLACK.getRGB());
+        tfp.getStyle().setFgColor(Color.BLACK.getRGB());
+        tfcp.getStyle().setFgColor(Color.BLACK.getRGB());
+
         Container contUsername= (FlowLayout.encloseIn(
-                new TextField("","Username"),
-                new TextField("","Email"),
-                new TextField("","Password",20,TextArea.PASSWORD),
-                new TextField("","Confirm password",20,TextArea.PASSWORD)
+              tfu,tfe,tfp,tfcp
 
         ));
         Button signUp=new Button("Sign up");

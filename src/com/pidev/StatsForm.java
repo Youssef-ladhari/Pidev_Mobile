@@ -1,20 +1,20 @@
 /*
  * Copyright (c) 2016, Codename One
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
  * and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
  * of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package com.pidev;
@@ -38,19 +38,21 @@ import com.pidev.entities.User;
 public class StatsForm extends SideMenuBaseForm {
     private static final int[] COLORS = {0xf8e478, 0x60e6ce, 0x878aee};
     private static final String[] LABELS = {"Design", "Coding", "Learning"};
+    private User user;
 
-    public StatsForm(Resources res) {
-        super(new BorderLayout());
+    public StatsForm(Resources res, User user) {
+        super(new BorderLayout(),user);
+        this.user=user;
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
-        Image profilePic = res.getImage("user-picture.jpg");        
+        Image profilePic = res.getImage("user-picture.jpg");
         Image tintedImage = Image.createImage(profilePic.getWidth(), profilePic.getHeight());
         Graphics g = tintedImage.getGraphics();
         g.drawImage(profilePic, 0, 0);
         g.drawImage(res.getImage("gradient-overlay.png"), 0, 0, profilePic.getWidth(), profilePic.getHeight());
-        
+
         tb.getUnselectedStyle().setBgImage(tintedImage);
-        
+
         Button menuButton = new Button("");
         menuButton.setUIID("Title");
         FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
@@ -59,26 +61,25 @@ public class StatsForm extends SideMenuBaseForm {
         Button settingsButton = new Button("");
         settingsButton.setUIID("Title");
         FontImage.setMaterialIcon(settingsButton, FontImage.MATERIAL_SETTINGS);
-        
+
         Label space = new Label("", "TitlePictureSpace");
         space.setShowEvenIfBlank(true);
-        Container titleComponent = 
+        Container titleComponent =
                 BorderLayout.north(
                     BorderLayout.west(menuButton).add(BorderLayout.EAST, settingsButton)
                 ).
                 add(BorderLayout.CENTER, space).
-                add(BorderLayout.SOUTH, 
+                add(BorderLayout.SOUTH,
                         FlowLayout.encloseIn(
-                                new Label("  Jennifer ", "WelcomeBlue"),
-                                new Label("Wilson", "WelcomeWhite")
+                                new Label("   "+user.getUsername(), "WelcomeBlue")
                         ));
         titleComponent.setUIID("BottomPaddingContainer");
         tb.setTitleComponent(titleComponent);
-        
+
         Label separator = new Label("", "BlueSeparatorLine");
         separator.setShowEvenIfBlank(true);
         add(BorderLayout.NORTH, separator);
-        
+
 
         XYMultipleSeriesDataset multi = new XYMultipleSeriesDataset();
 
@@ -101,21 +102,21 @@ public class StatsForm extends SideMenuBaseForm {
         seriesXY.add(8, 4);
 
         XYMultipleSeriesRenderer renderer = createChartMultiRenderer();
-        
+
         CubicLineChart chart = new CubicLineChart(multi, renderer,
                 0.5f);
-        
-        
+
+
         Container enclosure = BorderLayout.center(new ChartComponent(chart)).
                 add(BorderLayout.NORTH, FlowLayout.encloseCenter(
                         new Label(LABELS[0], colorCircle(COLORS[0])),
                         new Label(LABELS[1], colorCircle(COLORS[1])),
                         new Label(LABELS[2], colorCircle(COLORS[2]))
                 ));
-        
-        add(BorderLayout.CENTER, 
+
+        add(BorderLayout.CENTER,
                 enclosure);
-        
+
         setupSideMenu(res);
     }
 
@@ -127,10 +128,10 @@ public class StatsForm extends SideMenuBaseForm {
         g.fillArc(0, 0, size, size, 0, 360);
         return i;
     }
-    
+
     @Override
     protected void showOtherForm(Resources res) {
-        new ProfileForm(res,new User()).show();
+        new ProfileForm(res,user).show();
     }
 
     private XYMultipleSeriesRenderer createChartMultiRenderer() {
@@ -158,12 +159,12 @@ public class StatsForm extends SideMenuBaseForm {
         renderer.setXLabels(5);
         renderer.setYLabels(5);
         renderer.setShowGrid(true);
-        
+
         renderer.setMargins(new int[] {0, 0, 0, 0});
         renderer.setMarginsColor(0xffffff);
 
         renderer.setShowLegend(false);
-        
+
         renderer.setXAxisMin(3);
         renderer.setXAxisMax(8);
         renderer.setYAxisMin(0);
