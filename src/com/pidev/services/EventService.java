@@ -1,23 +1,16 @@
 package com.pidev.services;
 
-import com.codename1.io.ConnectionRequest;
-import com.codename1.io.NetworkEvent;
-import com.codename1.io.NetworkManager;
-import com.codename1.ui.List;
+import com.codename1.io.*;
 import com.codename1.ui.events.ActionListener;
 import com.pidev.entities.Event;
 import com.pidev.utils.Statics;
-import com.codename1.io.CharArrayReader;
-import com.codename1.io.ConnectionRequest;
-import com.codename1.io.JSONParser;
-import com.codename1.io.NetworkEvent;
-import com.codename1.io.NetworkManager;
-import com.codename1.ui.events.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static java.lang.Float.parseFloat;
 
 public class EventService {
 
@@ -44,11 +37,11 @@ public class EventService {
         String url =  Statics.BASE_URL + "create";
         request.setUrl(url);
         request.setPost(false);
-        request.addArgument("name", event.getNom_event());
-        request.addArgument("type", event.getType_event());
-        request.addArgument("date", String.valueOf(event.getDate_event()));
-        request.addArgument("lieu", event.getLieu_event());
-        request.addArgument("description", event.getDescription_event());
+        request.addArgument("nom_event", event.getNom_event());
+        request.addArgument("type_event", event.getType_event());
+        request.addArgument("date_event", String.valueOf(event.getDate_event()));
+        request.addArgument("lieu_event", event.getLieu_event());
+        request.addArgument("description_event", event.getDescription_event());
 
         request.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -71,66 +64,121 @@ public class EventService {
             public void actionPerformed(NetworkEvent evt) {
 
                 String response = new String(request.getResponseData());
-                events = parseEvent(response);
+                events = parseTask(response);
             }
         });
         NetworkManager.getInstance().addToQueueAndWait(request);
         return events;
     }
 
-    public List<Event> parseEvent (String jsonText){
+    public List<Event> parseTask(String jsonText){
         try {
-            events = new ArrayList<>();
-            System.out.println(jsonText);
-            System.out.println("+++++++++++++");
-            JSONParser jsonParser = new JSONParser();
-            Map<String, Object> eventListJson= jsonParser.parseJSON(new CharArrayReader(jsonText.toCharArray()));
-            System.out.println(eventListJson);
+            events =new ArrayList<>();
+            JSONParser j = new JSONParser();
+            Map<String,Object> tasksListJson =
+                    j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
 
-            List<Map<String,Object>> list = (List<Map<String,Object>>) eventListJson.get("root");
+            List<Map<String,Object>> list = (List<Map<String,Object>>)tasksListJson.get("root");
             for(Map<String,Object> obj : list){
-                Event event = new Event();
-                float id = Float.parseFloat(obj.get("id").toString());
-                event.setId((int)id);
-
-                try{
-                    event.setNom_event(obj.get("nom_event").toString());
-                }catch(NullPointerException e){
-                    event.setNom_event("null");
-                }
-
-                try{
-                    event.setType_event(obj.get("type_event").toString());
-
-                }catch(NullPointerException e){
-                    event.setType_event("null");
-                }
-
-                try{
-                    event.setDate_event(obj.get("date_event").toString());
-
-                }catch(NullPointerException e){
-                    event.setDate_event(ToDate(0));
-                }
-
-                try{
-                    event.setLieu_event(obj.get("lieu_event").toString());
-
-                }catch(NullPointerException e){
-                    event.setLieu_event("null");
-                }
-                try{
-                    event.setDescription_event(obj.get("description_event").toString());
-
-                }catch(NullPointerException e){
-                    event.setDescription_event("null");
-                }
-
-                events.add(event);
+                Event e = new Event(nom_event.getText(), type_event.getText(), lieu_event.getText(), description_event.getText());
+                float id = parseFloat(obj.get("id").toString());
+                e.setId((int)id);
+                e.setNom_event(obj.get("nom_event").toString());
+                e.setType_event(obj.get("type_event").toString());
+                e.setDate_event(obj.get("date_event").toString());
+                e.setLieu_event(obj.get("lieu_event").toString());
+                e.setDescription_event(obj.get("description_event").toString());
+                events.add(e);
             }
+
+
         } catch (IOException ex) {
+
         }
         return events;
+    }
+
+    public boolean UpdateEvent(Event events)
+    {
+        String url = Statics.BASE_URL+"/voyage/UpdateVoyageJSON/"+events.getId()+"&Nom_event="+events.getNom_event()+"&type_event="+events.getType_event()+"&date_event="+events.getDate_event()+"&lieu_event="+events.getLieu_event()+"?Destination="+events.getDescription_event();
+        //  String url = Statics.BASE_URL + "create";
+        request.setUrl(url);
+        request.addResponseListener((e) -> {
+            responseOk = request.getResponseCode() == 200; //Code HTTP 200 OK
+            String str = new String(request.getResponseData());
+            System.out.println("data"+str);
+        });
+        NetworkManager.getInstance().addToQueueAndWait(request);
+        return responseOk;
+    }
+
+    public boolean deleteEvent(int id) {
+
+        String url = Statics.BASE_URL + "/voyage/DeleteVoyageJSON/" + id + "";
+        request.setUrl(url);
+        request.setPost(true);
+        request.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                responseOk = request.getResponseCode() == 200;
+                request.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(request);
+        return responseOk;
+    }
+
+    public ArrayList<Event> affichageEvent()
+    {
+        ArrayList<Event> result = new ArrayList<>();
+        String  url = Statics.BASE_URL +"/voyage/AllVoyageJSON";
+        request.setUrl(url);
+        request.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                JSONParser jsonp;
+                jsonp = new JSONParser();
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> mapEvent = jsonp.parseJSON(new CharArrayReader(new String(request.getResponseData()).toCharArray()));
+
+                    List<Map<String, Object>> listOfMaps = (List<Map<String, Object>>) mapEvent.get("root");
+
+                    for (Map<String, Object> obj : listOfMaps) {
+                        Event e = new Event(nom_event.getText(), type_event.getText(), lieu_event.getText(), description_event.getText());
+                        int id = (int) parseFloat(obj.get("id").toString());
+                        String nom_event = obj.get("nom_event").toString();
+                        String type_event = obj.get("type_event").toString();
+                        //Date date_event=(Date) request.parseDate();
+                        String lieu_event = obj.get("lieu_event").toString();
+                        String description_event = obj.get("description_event").toString();
+
+
+                        e.setId((int) id);
+                        e.setNom_event(nom_event);
+                        e.setType_event(type_event);
+                        e.setLieu_event(lieu_event);
+                        e.setDescription_event(description_event);
+
+//                        String DateConverter=obj.get("date").toString().substring(obj.get("Date").toString().indexOf("timestamp")+10 , obj.get("Date").toString().lastIndexOf("}"));
+                        //             Date currentTime = new Date(Double.valueOf(DateConverter).longValue() * 1000);
+                        //             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        //            String dateString = formatter.format(currentTime);
+                        //            v.setDate(dateString);
+                        result.add(e);
+
+                    }
+                }
+
+                catch(Exception e ){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        NetworkManager.getInstance().addToQueueAndWait(request);
+
+        return result;
     }
 
 }

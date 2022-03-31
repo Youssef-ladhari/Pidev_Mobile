@@ -12,7 +12,7 @@ public class Event {
 
 
 
-    public Event() {}
+    public Event(String text, String type_eventText, String lieu_eventText, String description_eventText) {}
 
     public Event(String nom_event, String type_event, String status_event, String date_event, String lieu_event, String description_event) {
         this.nom_event = nom_event;
@@ -23,7 +23,7 @@ public class Event {
         this.description_event = description_event;
     }
 
-    public Event(int id, String nom_event, String type_event, String status_event, String date_event, String lieu_event, String description_event) {
+    public Event(int id) {
         this.id = id;
         this.nom_event = nom_event;
         this.type_event = type_event;
