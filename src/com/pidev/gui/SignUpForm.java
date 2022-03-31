@@ -39,8 +39,22 @@ public class SignUpForm extends Form {
               tfu,tfe,tfp,tfcp
 
         ));
+        Container footer=new Container(BoxLayout.x());
+
         Button signUp=new Button("Sign up");
-        contUsername.add(signUp);
+        //contUsername.add(signUp);
+        Button back=new Button("Back");
+        //contUsername.add(back);
+        back.addActionListener(evt -> {
+            try {
+                new LoginForm(res).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        footer.add(signUp);
+        footer.add(back);
+        contUsername.add(footer);
         signUp.addActionListener(evt -> {
             User user=new User();
             try {

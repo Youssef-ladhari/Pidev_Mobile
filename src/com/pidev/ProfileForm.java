@@ -87,14 +87,7 @@ public class ProfileForm extends SideMenuBaseForm {
         addButtonBottom(arrowDown, "Design app illustrations", 0x5ae29d, false);
         addButtonBottom(arrowDown, "Javascript training ", 0x4dc2ff, false);
         addButtonBottom(arrowDown, "Surprise Party for Matt", 0xffc06f, false);
-        Container contUsername= (FlowLayout.encloseIn(
-                new TextField("","Username"),
-                new TextField("","Email"),
-                new TextField("","Password",20,TextArea.PASSWORD),
-                new TextField("","Confirm password",20,TextArea.PASSWORD)
 
-        ));
-        add(FlowLayout.encloseIn(contUsername));
         setupSideMenu(res);
     }
     
