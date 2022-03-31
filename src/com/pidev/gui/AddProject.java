@@ -1,6 +1,12 @@
 package com.pidev.gui;
 
 import com.codename1.ui.*;
+import com.codename1.ui.Button;
+import com.codename1.ui.Component;
+import com.codename1.ui.Container;
+import com.codename1.ui.Label;
+import com.codename1.ui.TextArea;
+import com.codename1.ui.TextField;
 import com.pidev.SideMenuBaseForm;
 
 import com.codename1.components.FloatingHint;
@@ -8,6 +14,8 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+
+import java.awt.*;
 
 public class AddProject extends Form {
 
@@ -17,37 +25,47 @@ public class AddProject extends Form {
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
 
-        setUIID("LoginForm");
         Form previous = Display.getInstance().getCurrent();
         tb.setBackCommand("", e -> previous.showBack());
 
-
-        TextField username = new TextField("", "Username", 20, TextField.ANY);
-        TextField email = new TextField("", "E-Mail", 20, TextField.EMAILADDR);
-        TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
-        TextField confirmPassword = new TextField("", "Confirm Password", 20, TextField.PASSWORD);
-        username.setSingleLineTextArea(false);
-        email.setSingleLineTextArea(false);
-        password.setSingleLineTextArea(false);
-        confirmPassword.setSingleLineTextArea(false);
+        TextField Tname = new TextField("", "Project Name", 20, TextField.ANY);
+        TextField Tperiode = new TextField("", "Periode", 20, TextField.ANY);
+        TextField Tprice = new TextField("", "Price", 20, TextField.ANY);
+        TextArea Tdescription = new TextField("", "Description",20, TextField.ANY);
+        Tname.setSingleLineTextArea(false);
+        Tperiode.setSingleLineTextArea(false);
+        Tprice.setSingleLineTextArea(false);
+        Tdescription.setSingleLineTextArea(false);
         Button next = new Button("Next");
         Button signIn = new Button("Sign In");
         signIn.addActionListener(e -> previous.showBack());
-
+        signIn.setUIID("Link");
         Label alreadHaveAnAccount = new Label("Already have an account?");
+
+        Container item = new Container(BoxLayout.y());
+
+
+
+Tname.getStyle().setFgColor(Color.BLACK.getRGB());
+Tperiode.getStyle().setFgColor(Color.BLACK.getRGB());
+Tprice.getStyle().setFgColor(Color.BLACK.getRGB());
+Tdescription.getStyle().setFgColor(Color.BLACK.getRGB());
+
+
 
         Container content = BoxLayout.encloseY(
 
-                new FloatingHint(username),
+                new FloatingHint(Tname),
                 createLineSeparator(),
-                new FloatingHint(email),
+                new FloatingHint(Tperiode),
                 createLineSeparator(),
-                new FloatingHint(password),
+                new FloatingHint(Tprice),
                 createLineSeparator(),
-                new FloatingHint(confirmPassword),
+                new FloatingHint(Tdescription),
                 createLineSeparator()
         );
         content.setScrollableY(true);
+        add(BorderLayout.NORTH,new Label(" "));
         add(BorderLayout.CENTER, content);
         add(BorderLayout.SOUTH, BoxLayout.encloseY(
                 next,
@@ -56,6 +74,7 @@ public class AddProject extends Form {
         next.requestFocus();
 
     }
+
 
 
 
