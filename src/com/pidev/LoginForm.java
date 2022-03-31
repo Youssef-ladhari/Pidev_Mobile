@@ -26,7 +26,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import com.pidev.entities.User;
 import com.pidev.gui.SignUpForm;
-import com.pidev.serviceImplementation.AuthentificationService;
+import com.pidev.services.AuthentificationService;
 
 import java.io.*;
 

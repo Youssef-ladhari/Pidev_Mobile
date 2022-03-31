@@ -6,7 +6,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import com.pidev.LoginForm;
 import com.pidev.entities.User;
-import com.pidev.serviceImplementation.AuthentificationService;
+import com.pidev.services.AuthentificationService;
 
 import java.io.IOException;
 import java.util.List;

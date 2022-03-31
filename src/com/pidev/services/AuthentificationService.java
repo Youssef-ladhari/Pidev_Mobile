@@ -1,20 +1,18 @@
-package com.pidev.serviceImplementation;
+package com.pidev.services;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.JSONParser;
 import com.pidev.entities.User;
-import com.pidev.services.Authentification;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-public class AuthentificationService implements Authentification {
-    @Override
+public class AuthentificationService {
+
     public User login(String login, String password) {
         var url = "http://localhost:8000/api/v1/loginJson";
         HttpURLConnection con = null;
@@ -58,7 +56,6 @@ public class AuthentificationService implements Authentification {
             return user;
         }
     }
-    @Override
     public Boolean signUp(User user) {
         JSONParser js = new JSONParser();
         var url = "http://localhost:8000/api/v1/signupJson";

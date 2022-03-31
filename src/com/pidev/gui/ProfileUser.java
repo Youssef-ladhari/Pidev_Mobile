@@ -3,22 +3,17 @@
 package com.pidev.gui;
 
 import com.codename1.components.FloatingActionButton;
-import com.codename1.components.MultiButton;
 import com.codename1.ui.*;
-import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
-import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.pidev.SideMenuBaseForm;
 import com.pidev.StatsForm;
 import com.pidev.entities.User;
-import com.pidev.serviceImplementation.UserServiceImplementation;
-
-import javax.swing.*;
+import com.pidev.services.UserServiceImplementation;
 
 public class ProfileUser extends SideMenuBaseForm {
     private User user;

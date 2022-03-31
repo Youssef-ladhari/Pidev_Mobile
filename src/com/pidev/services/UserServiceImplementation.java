@@ -1,9 +1,8 @@
-package com.pidev.serviceImplementation;
+package com.pidev.services;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.JSONParser;
 import com.pidev.entities.User;
-import com.pidev.services.Userservice;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,8 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-public class UserServiceImplementation implements Userservice {
-    @Override
+public class UserServiceImplementation {
+
     public User modifyProfile(User user) {
         var url = "http://localhost:8000/api/v1/profile";
         HttpURLConnection con = null;
