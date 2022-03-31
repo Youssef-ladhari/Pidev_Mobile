@@ -77,6 +77,7 @@ public class ProjectShowAll extends SideMenuBaseForm {
     Resources res ;
     public ProjectShowAll(Resources ress) {
         super(new BorderLayout());
+
         res=ress;
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
@@ -93,6 +94,10 @@ this.setScrollable(true);
         title.setUIID("Title");
         T1.add(CENTER,title);
 
+        Button add = new Button("Create Project");
+        add.addActionListener((e)->new AddProject(res).show());
+
+    T1.add(RIGHT,add);
 
 
         tb.setTitleComponent(T1);
@@ -105,7 +110,7 @@ this.setScrollable(true);
 
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
-        ArrayList<Project> proj = ProjectService.getInstance().getAllTasks();
+        ArrayList<Project> proj = ProjectService.getInstance().getAllProjects();
         Dimension d = new Dimension(Display.getInstance().getDisplayHeight(), Display.getInstance().getDisplayWidth());
         item.setSize(d);
 
@@ -120,7 +125,14 @@ this.setScrollable(true);
 
                // System.out.println(p);
                 item.add(addButton( p));
+                Container line = new Container(new FlowLayout(CENTER));
+                Dimension dim = new Dimension(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight()/120);
 
+
+
+                line.add(createLineSeparator(Color.LIGHT_GRAY.getRGB()));
+               line.setPreferredSize(dim);
+                item.add(  line);
 
             }
         } catch (Exception e) {
@@ -218,5 +230,15 @@ if (p.getPrice()==0.0){
         ReadMore.addActionListener((e)->{});
 
         return cnt;
+    }
+    public Component createLineSeparator(int color) {
+        Label separator = new Label("                                                                                                                                 ", "WhiteSeparator");
+        Dimension d = new Dimension(Display.getInstance().getDisplayHeight()/100, Display.getInstance().getDisplayWidth());
+
+        separator.setSize(d);
+        separator.getUnselectedStyle().setBgColor(color);
+        separator.getUnselectedStyle().setBgTransparency(255);
+        separator.setShowEvenIfBlank(true);
+        return separator;
     }
 }

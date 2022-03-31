@@ -20,13 +20,16 @@ import com.codename1.ui.util.Resources;
 
 import com.pidev.SideMenuBaseForm;
 import com.pidev.entities.Project;
+import com.pidev.entities.User;
+import com.pidev.services.ProjectService;
 
 import java.awt.*;
 import java.util.Base64;
 
 public class ShowNormalProject  extends SideMenuBaseForm {
-    public ShowNormalProject(Resources res, Project p) {
+    public ShowNormalProject(Resources ress, Project p) {
         super(BoxLayout.y());
+        Resources res=ress;
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
 
@@ -90,10 +93,24 @@ else {
         fab.getAllStyles().setMarginUnit(Style.UNIT_TYPE_PIXELS);
         fab.getAllStyles().setMargin(BOTTOM, Periodelab.getPreferredH() - fab.getPreferredH() / 2);
         tb.setTitleComponent(fab.bindFabToContainer(titleCmp, CENTER, BOTTOM));
+        System.out.println("---+" +p.getUsers());
+        Form Tab = new Form("Collaborators", new TableLayout(5, 2));
+       for (User u :p.getUsers()) {
+           Container row = new Container();
 
-        Form Tab = new Form("Collaborators", new TableLayout(2, 2));
+           Label l = new Label(u.getEmail());
+           Label b = new Label("Block");
+           b.addPointerPressedListener((e)-> {
+               new ShowNormalProject(res, ProjectService.getInstance().getProjectById(p.getId())).show();
+
+           });
 
 
+row.add(l);
+           row.add(b);
+Tab.add(row);
+
+       }
 
         this.add(Tab);
 
