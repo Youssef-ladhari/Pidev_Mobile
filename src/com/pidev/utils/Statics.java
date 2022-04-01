@@ -5,7 +5,7 @@ package com.pidev.utils;
  */
 public class Statics {
 
-    public static final String BASE_URL = "lo";
+    public static final String BASE_URL = "http://127.0.0.1:8000/";
 
 }
 

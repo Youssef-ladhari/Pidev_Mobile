@@ -14,7 +14,7 @@ import static java.lang.Float.parseFloat;
 
 public class EventService {
 
-    public List<Event> events;
+    public ArrayList<Event> events;
     private boolean responseOk = false;
 
     public static EventService instance = null;
@@ -34,14 +34,26 @@ public class EventService {
 
     public boolean addEvent(Event event){
 
-        String url =  Statics.BASE_URL + "create";
+        try{
+            String jsonEvent= "{" +
+                    "\"nom_event\": \""+event.getNom_event()+"\"," +
+                    "\"type_event\": \""+event.getType_event()+"\"," +
+                    "\"date_event\": \""+event.getDate_event()+"\"," +
+                    "\"lieu_event\": \""+event.getLieu_event()+"\"," +
+                    "\"description_event\": \""+event.getDescription_event()+"\"," +
+                    "\"status_event\": \""+event.getStatus_event()+"\"" +
+                    "}";
+        String url =  "http://127.0.0.1:8000/event/add";
         request.setUrl(url);
-        request.setPost(false);
-        request.addArgument("nom_event", event.getNom_event());
-        request.addArgument("type_event", event.getType_event());
-        request.addArgument("date_event", String.valueOf(event.getDate_event()));
-        request.addArgument("lieu_event", event.getLieu_event());
-        request.addArgument("description_event", event.getDescription_event());
+        request.setPost(true);
+        request.setRequestBody(jsonEvent);
+//        request.addArgument("nom_event", event.getNom_event());
+//        request.addArgument("type_event", event.getType_event());
+//        request.addArgument("date_event", event.getDate_event());
+//        request.addArgument("lieu_event", event.getLieu_event());
+//        request.addArgument("description_event", event.getDescription_event());
+//        request.addArgument("status_event",event.getStatus_event());
+        System.out.println(request.getRequestBody());
 
         request.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -52,10 +64,15 @@ public class EventService {
         });
         NetworkManager.getInstance().addToQueueAndWait(request);
         return responseOk;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public List<Event> getAllEvents(){
-        String url = Statics.BASE_URL + "get";
+    public ArrayList<Event> affichageEvent(){
+        String url = "http://127.0.0.1:8000/event/liste";
         request.setUrl(url);
         request.setPost(false);
 
@@ -71,7 +88,7 @@ public class EventService {
         return events;
     }
 
-    public List<Event> parseTask(String jsonText){
+    public ArrayList<Event> parseTask(String jsonText){
         try {
             events =new ArrayList<>();
             JSONParser j = new JSONParser();
@@ -79,8 +96,9 @@ public class EventService {
                     j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
 
             List<Map<String,Object>> list = (List<Map<String,Object>>)tasksListJson.get("root");
+            System.out.println("aaaaaaaaaaaaa"+jsonText);
             for(Map<String,Object> obj : list){
-                Event e = new Event(nom_event.getText(), type_event.getText(), lieu_event.getText(), description_event.getText());
+                Event e = new Event();
                 float id = parseFloat(obj.get("id").toString());
                 e.setId((int)id);
                 e.setNom_event(obj.get("nom_event").toString());
@@ -114,7 +132,7 @@ public class EventService {
 
     public boolean deleteEvent(int id) {
 
-        String url = Statics.BASE_URL + "/voyage/DeleteVoyageJSON/" + id + "";
+        String url = "http://127.0.0.1:8000/event/delete"+id;
         request.setUrl(url);
         request.setPost(true);
         request.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -128,10 +146,66 @@ public class EventService {
         return responseOk;
     }
 
-    public ArrayList<Event> affichageEvent()
+//    public ArrayList<Event> affichageEvent()
+//    {
+//        ArrayList<Event> result = new ArrayList<>();
+//        String  url = Statics.BASE_URL +"event/liste";
+//        request.setUrl(url);
+//        request.addResponseListener(new ActionListener<NetworkEvent>() {
+//            @Override
+//            public void actionPerformed(NetworkEvent evt) {
+//                JSONParser jsonp;
+//                jsonp = new JSONParser();
+//                try {
+//                    //renvoi une map avec clé = root et valeur le reste
+//                    Map<String, Object> mapEvent = jsonp.parseJSON(new CharArrayReader(new String(request.getResponseData()).toCharArray()));
+//
+//                    List<Map<String, Object>> listOfMaps = (List<Map<String, Object>>) mapEvent.get("root");
+//
+//                    System.out.println(listOfMaps.toString());
+//                    for (Map<String, Object> obj : listOfMaps) {
+//                        Event e = new Event();
+//                        int id = (int) parseFloat(obj.get("id").toString());
+//                        String nom_event = obj.get("nom_event").toString();
+//                        String type_event = obj.get("type_event").toString();
+//                        String date_event= obj.get("date_event").toString();
+//                        String lieu_event = obj.get("lieu_event").toString();
+//                        String description_event = obj.get("description_event").toString();
+//
+//
+//                        e.setId((int) id);
+//                        e.setNom_event(nom_event);
+//                        e.setType_event(type_event);
+//                        e.setLieu_event(lieu_event);
+//                        e.setDescription_event(description_event);
+//
+//
+////                        String DateConverter=obj.get("date").toString().substring(obj.get("Date").toString().indexOf("timestamp")+10 , obj.get("Date").toString().lastIndexOf("}"));
+//                        //             Date currentTime = new Date(Double.valueOf(DateConverter).longValue() * 1000);
+//                        //             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//                        //            String dateString = formatter.format(currentTime);
+//                        //            v.setDate(dateString);
+//                        result.add(e);
+//
+//                    }
+//                }
+//
+//                catch(Exception e ){
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        NetworkManager.getInstance().addToQueueAndWait(request);
+//
+//        return result;
+//    }
+
+
+    public ArrayList<Event> order_By_NomJSON()
     {
         ArrayList<Event> result = new ArrayList<>();
-        String  url = Statics.BASE_URL +"/voyage/AllVoyageJSON";
+        String  url = Statics.BASE_URL +"/voyage/order_By_NomJSON";
         request.setUrl(url);
         request.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -140,32 +214,35 @@ public class EventService {
                 jsonp = new JSONParser();
                 try {
                     //renvoi une map avec clé = root et valeur le reste
-                    Map<String, Object> mapEvent = jsonp.parseJSON(new CharArrayReader(new String(request.getResponseData()).toCharArray()));
+                    Map<String, Object> mapVoyage = jsonp.parseJSON(new CharArrayReader(new String(request.getResponseData()).toCharArray()));
 
-                    List<Map<String, Object>> listOfMaps = (List<Map<String, Object>>) mapEvent.get("root");
+                    List<Map<String, Object>> listOfMaps = (List<Map<String, Object>>) mapVoyage.get("root");
 
                     for (Map<String, Object> obj : listOfMaps) {
-                        Event e = new Event(nom_event.getText(), type_event.getText(), lieu_event.getText(), description_event.getText());
-                        int id = (int) parseFloat(obj.get("id").toString());
+                        Event v = new Event();
+                        int id = (int) Float.parseFloat(obj.get("id").toString());
                         String nom_event = obj.get("nom_event").toString();
                         String type_event = obj.get("type_event").toString();
-                        //Date date_event=(Date) request.parseDate();
+                        String date_event = obj.get("date_event").toString();
                         String lieu_event = obj.get("lieu_event").toString();
                         String description_event = obj.get("description_event").toString();
 
 
-                        e.setId((int) id);
-                        e.setNom_event(nom_event);
-                        e.setType_event(type_event);
-                        e.setLieu_event(lieu_event);
-                        e.setDescription_event(description_event);
+
+                        v.setId((int) id);
+                        v.setNom_event(nom_event);
+                        v.setType_event(type_event);
+                        v.setDate_event(date_event);
+                        v.setLieu_event(lieu_event);
+                        v.setDescription_event(description_event);
+
 
 //                        String DateConverter=obj.get("date").toString().substring(obj.get("Date").toString().indexOf("timestamp")+10 , obj.get("Date").toString().lastIndexOf("}"));
                         //             Date currentTime = new Date(Double.valueOf(DateConverter).longValue() * 1000);
                         //             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         //            String dateString = formatter.format(currentTime);
                         //            v.setDate(dateString);
-                        result.add(e);
+                        result.add(v);
 
                     }
                 }
@@ -180,5 +257,4 @@ public class EventService {
 
         return result;
     }
-
 }

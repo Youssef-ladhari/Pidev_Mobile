@@ -11,6 +11,8 @@ public class Event {
     private String description_event;
 
 
+    public Event() {
+    }
 
     public Event(String text, String type_eventText, String lieu_eventText, String description_eventText) {}
 
@@ -25,12 +27,6 @@ public class Event {
 
     public Event(int id) {
         this.id = id;
-        this.nom_event = nom_event;
-        this.type_event = type_event;
-        this.status_event = status_event;
-        this.date_event = date_event;
-        this.lieu_event = lieu_event;
-        this.description_event = description_event;
     }
 
     public int getId() {

@@ -23,6 +23,7 @@ import com.codename1.ui.*;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
+import com.pidev.gui.Events.Event;
 
 import java.io.IOException;
 
@@ -60,6 +61,7 @@ public abstract class SideMenuBaseForm extends Form {
         sidemenuTop.setUIID("SidemenuTop");
         
         getToolbar().addComponentToSideMenu(sidemenuTop);
+        getToolbar().addMaterialCommandToSideMenu("  Events", FontImage.MATERIAL_ACCESS_TIME,  e -> new Event(res).show());
         getToolbar().addMaterialCommandToSideMenu("  Dashboard", FontImage.MATERIAL_DASHBOARD,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Activity", FontImage.MATERIAL_TRENDING_UP,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Tasks", FontImage.MATERIAL_ACCESS_TIME,  e -> showOtherForm(res));
@@ -73,5 +75,5 @@ public abstract class SideMenuBaseForm extends Form {
         });
     }
     
-    protected abstract void showOtherForm(Resources res);
+    protected void showOtherForm(Resources res){};
 }
