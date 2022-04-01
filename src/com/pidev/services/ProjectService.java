@@ -89,6 +89,48 @@ Project p = new Project();
         return resultOK;
     }
 
+
+    public  void setcomplete(int id){
+        //String url = Statics.BASE_URL+"/tasks/";
+        req.setPost(true);
+        String url = Statics.BASE_URL+"project/complete/"+id;
+
+        req.setUrl(url);
+
+
+
+
+        NetworkManager.getInstance().addToQueueAndWait(req);
+
+    }
+
+    public  void Join(int id,int userid){
+        //String url = Statics.BASE_URL+"/tasks/";
+        req.setPost(true);
+        String url = Statics.BASE_URL+"project/join/"+id;
+        req.addArgument("userid",userid+"");
+        req.setUrl(url);
+
+
+
+
+        NetworkManager.getInstance().addToQueueAndWait(req);
+
+    }
+    public  void block(int userid,int projectid){
+        //String url = Statics.BASE_URL+"/tasks/"id;
+        req.setPost(true);
+        String url = Statics.BASE_URL+"project/block/"+userid;
+        req.addArgument("projectid",projectid+"");
+        req.setUrl(url);
+
+
+
+
+        NetworkManager.getInstance().addToQueueAndWait(req);
+
+    }
+
     public  ArrayList<Project> getAllProjects(){
         //String url = Statics.BASE_URL+"/tasks/";
         String url = Statics.BASE_URL+"project";
@@ -151,6 +193,7 @@ Project p = new Project();
 
                 p.setName(  obj.get("name").toString());
                 p.setPeriode((int) Double.parseDouble(obj.get("periode").toString()));
+                p.setState((int) Double.parseDouble(obj.get("state").toString()));
                 p.setPrice(Float.parseFloat(obj.get("price").toString()));
                 p.setImage(obj.get("image").toString());
               //  System.out.println("----"+obj.get("creator").toString());
@@ -185,7 +228,7 @@ Project p = new Project();
                     u.setEmail(lu.get("email").toString());
                 userss.add(u);
                 }
-
+                p.setBlocked((ArrayList<Integer>)obj.get("blocked"));
                 p.setUsers(userss);
 
                 projs.add(p);
@@ -219,6 +262,7 @@ Project p = new Project();
                 p.setName(  obj.get("name").toString());
                 p.setPeriode((int) Double.parseDouble(obj.get("periode").toString()));
                 p.setPrice(Float.parseFloat(obj.get("price").toString()));
+            p.setState((int) Double.parseDouble(obj.get("state").toString()));
                 p.setImage(obj.get("image").toString());
                 //  System.out.println("----"+obj.get("creator").toString());
 //                List<User> ce = mapper.convertValue(

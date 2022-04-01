@@ -25,6 +25,8 @@ import com.pidev.entities.User;
 import com.pidev.services.ProjectService;
 
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Base64;
 
 public class ShowNormalProject extends SideMenuBaseForm {
@@ -33,6 +35,7 @@ public class ShowNormalProject extends SideMenuBaseForm {
     public ShowNormalProject(Resources ress, Project p, User user) {
         super(BoxLayout.y(), user);
         Resources res = ress;
+
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
 
@@ -80,14 +83,18 @@ public class ShowNormalProject extends SideMenuBaseForm {
         Label lt = new Label("Duration" + p.getPeriode());
         Ltime.add(RIGHT, lt);
 
+Button complete = new Button("Set As Complete");
+        complete.getStyle().setFgColor(Color.GREEN.getRGB());
+        Container Ccomeplete = new Container(new BorderLayout());
 
+        Ccomeplete.add(CENTER,complete);
         Container titleCmp = BoxLayout.encloseY(
                 FlowLayout.encloseIn(menuButton),
                 BorderLayout.centerAbsolute(
                         BoxLayout.encloseY(
                                 new Label(p.getName(), "Title"),
                                 new Label(p.getCategory().getName(), "SubTitle"),
-                                new Label(p.getPeriode().toString() + " J/H", "SubTitle")
+                                new Label(p.getPeriode().toString()+ " J/H", "SubTitle")
                         )
                 ).add(BorderLayout.WEST, profilePicLabel),
                 GridLayout.encloseIn(2, Pricelab, Periodelab)
@@ -108,38 +115,81 @@ public class ShowNormalProject extends SideMenuBaseForm {
 
         tb.setTitleComponent(fab.bindFabToContainer(titleCmp, CENTER, BOTTOM));
 
+        fab.addActionListener((e)->{
+
+            if (!in) {
+
+ProjectService.getInstance().Join(p.getId(),user.getId());
+
+                ArrayList<User> pop = p.getUsers();
+                pop.add(user);
+                p.setUsers(pop);
+                new ShowNormalProject(res,p,user).show();
+
+            }
+
+
+
+        });
+
+
+
         if (in) {
             fab.getStyle().setBgColor(Color.RED.getRGB());
-            fab.setEnabled(false);
+
             System.out.println("IFFFFFFFFFFFF");
-        } else {
-            fab.setEnabled(true);
-            fab.getStyle().setBgColor(Color.GREEN.getRGB());
+            } else {
+
+                fab.getStyle().setBgColor(Color.GREEN.getRGB());
             System.out.println("elseeeeeeeeeeeeeeeeeeeeee");
-        }
-        System.out.println("---+" + p.getUsers());
-        Form Tab = new Form("Collaborators", new TableLayout(5, 2));
-        for (User u : p.getUsers()) {
-            Container row = new Container();
-
-            Label l = new Label(u.getEmail());
-            Label b = new Label("Block");
-            b.addPointerPressedListener((e) -> {
-                new ShowNormalProject(res, ProjectService.getInstance().getProjectById(p.getId()), user).show();
-
-            });
+            }
+            System.out.println("---+" + p.getUsers());
 
 
-            row.add(l);
-            row.add(b);
-            Tab.add(row);
+            Form Tab = new Form("Collaborators", new TableLayout(p.getUsers().size(), 3));
+            for (User u : p.getUsers()) {
+                Container row = new Container(new BorderLayout());
 
-        }
+                Label l = new Label(u.getEmail());
+                Button b = new Button("Block");
 
-        this.add(Tab);
+                b.getStyle().setFgColor(Color.RED.getRGB());
+
+                b.addPointerPressedListener((e) -> {
+
+                  ProjectService.getInstance().block(user.getId(), p.getId());
+
+                    ArrayList<Integer> blo = p.getBlocked();
+                blo.add(user.getId());
+                  p.setBlocked(blo);
+                    new ShowNormalProject(res, ProjectService.getInstance().getProjectById(p.getId()), user).show();
+
+                });
 
 
-        setupSideMenu(res);
+                row.add(LEFT,l);
+                row.add(RIGHT,b);
+
+                Tab.add(row);
+
+            }
+
+            if ((user.getId()==p.getCreator().getId()) && (p.getState()==0)) {
+                complete.addActionListener((e)->{
+
+                   ProjectService.getInstance().setcomplete(p.getId());
+                    p.setState(1);
+                    new ShowNormalProject(res,p,user).show();
+                });
+                this.add(Ccomeplete);
+                System.out.println((user.getId()==p.getCreator().getId()) && (p.getState()==0));
+            }
+
+
+            this.add(Tab);
+
+
+            setupSideMenu(res);
 
 
     }

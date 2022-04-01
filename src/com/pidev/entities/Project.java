@@ -16,14 +16,14 @@ Integer periode;
 Float price;
 String image;
 Integer state;
-Array blocked;
+ArrayList<Integer> blocked;
 
 
 
     public Project() {
     }
 
-    public Project(Integer id, User creator, Category category, String name, String description, Integer periode, Float price, String image, Integer state, Array blocked,ArrayList<User> users) {
+    public Project(Integer id, User creator, Category category, String name, String description, Integer periode, Float price, String image, Integer state, ArrayList<Integer> blocked,ArrayList<User> users) {
         this.id = id;
         this.creator = creator;
         this.category = category;
@@ -124,11 +124,11 @@ Array blocked;
         this.state = state;
     }
 
-    public Array getBlocked() {
+    public ArrayList<Integer> getBlocked() {
         return blocked;
     }
 
-    public void setBlocked(Array blocked) {
+    public void setBlocked(ArrayList<Integer> blocked) {
         this.blocked = blocked;
     }
 

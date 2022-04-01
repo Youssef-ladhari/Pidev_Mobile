@@ -180,6 +180,16 @@ try {
         ta.setUIID("NewsTopLine");
         ta.setEditable(false);
         ta.setAlignment(Component.CENTER);
+       /* for (User us : p.getUsers()) {
+
+            if (us.getId() == userr.getId()) {
+   ta.getStyle().setFgColor(Color.GREEN.getRGB());
+
+            }
+            else{
+                ta.getStyle().setFgColor(Color.BLACK.getRGB());
+            }
+        }*/
         Label Lprice = new Label();
         Lprice.setUIID("NewsBottomLine");
         FontImage.setMaterialIcon(Lprice, FontImage.MATERIAL_ATTACH_MONEY);
