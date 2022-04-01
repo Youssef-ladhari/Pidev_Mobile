@@ -106,12 +106,8 @@ public class LoginForm extends Form {
         Button loginButton = new Button("LOGIN");
         loginButton.setUIID("LoginButton");
         loginButton.addActionListener(e -> {
-User u =new User();
-u.setEmail("asdas");
-u.setUsername("youssef");
-u.setPassword("q123456*");
-u.setId(1);
-new ProjectShowAll(theme,u).show();
+
+
             User user=authentificationService.login(login.getText(),password.getText());
             if (user!=null){
                 Toolbar.setGlobalToolbar(false);
