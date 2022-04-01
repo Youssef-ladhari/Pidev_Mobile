@@ -25,6 +25,7 @@ public class ProjectService {
 
     String test;
     Project project = new Project();
+    ArrayList<Category>  categorys = new ArrayList<>();
     public ArrayList<Project> projects = new ArrayList<>();
 
     public ArrayList<Project> dummy () {
@@ -59,11 +60,38 @@ Project p = new Project();
     }
 
 
+    public boolean addProject(Project p) {
 
+        String url = Statics.BASE_URL + "project/new";
+
+        req.setUrl(url);
+        req.addArgument("Sender", "mobile");
+        req.addArgument("name", p.getName());
+
+        req.addArgument("userid",""+p.getCreator().getId());
+        req.addArgument("periode",p.getPeriode().toString());
+        req.addArgument("price",""+p.getPrice());
+        System.out.println(p);
+        req.addArgument("category",""+p.getCategory().getId());
+        req.addArgument("description",p.getDescription());
+        req.addArgument("image64",p.getImage());
+
+
+
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOK = req.getResponseCode() == 200; //Code HTTP 200 OK
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOK;
+    }
 
     public  ArrayList<Project> getAllProjects(){
         //String url = Statics.BASE_URL+"/tasks/";
-        String url = Statics.BASE_URL;
+        String url = Statics.BASE_URL+"project";
 
         req.setUrl(url);
         req.setPost(false);
@@ -84,7 +112,7 @@ Project p = new Project();
     public  Project getProjectById(int id){
 
         //String url = Statics.BASE_URL+"/tasks/";
-        String url = Statics.BASE_URL+"myshow/"+id;
+        String url = Statics.BASE_URL+"project/myshow/"+id;
         System.out.println("url"+url);
         req.setUrl(url);
         req.setPost(false);
@@ -237,4 +265,57 @@ Project p = new Project();
         }
         return null ;
     }
+
+    public  ArrayList<Category> getCategory(){
+        //String url = Statics.BASE_URL+"/tasks/";
+        String url = Statics.BASE_URL+"project/category/get";
+
+        req.setUrl(url);
+        req.setPost(false);
+        req.addArgument("Sender", "mobile");
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                categorys =parseCategory( new String(req.getResponseData()));
+
+                req.removeResponseListener(this);
+            }
+        });
+
+
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return categorys;
+    }
+    public ArrayList<Category> parseCategory(String jsonText){
+        ArrayList<Category>   cats=new ArrayList<>();
+
+        try {
+
+
+            JSONParser j = new JSONParser();
+            Map<String,Object> CatsListJson =j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
+
+            List<Map<String,Object>> list = (List<Map<String,Object>>)CatsListJson.get("root");
+
+            for(Map<String,Object> obj : list){
+               Category c = new Category();
+
+                int i = 0 ;
+
+                c.setId( (int) Double.parseDouble(obj.get("id").toString()));
+
+
+                c.setName(  obj.get("name").toString());
+
+                cats.add(c);
+                System.out.println(cats);
+            }
+
+
+        } catch (IOException ex) {
+
+        }
+        return cats;
+    }
+
 }

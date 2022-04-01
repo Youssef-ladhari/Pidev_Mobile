@@ -25,6 +25,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import com.pidev.entities.User;
+import com.pidev.gui.ProjectShowAll;
 import com.pidev.gui.SignUpForm;
 import com.pidev.services.AuthentificationService;
 
@@ -105,7 +106,12 @@ public class LoginForm extends Form {
         Button loginButton = new Button("LOGIN");
         loginButton.setUIID("LoginButton");
         loginButton.addActionListener(e -> {
-
+User u =new User();
+u.setEmail("asdas");
+u.setUsername("youssef");
+u.setPassword("q123456*");
+u.setId(1);
+new ProjectShowAll(theme,u).show();
             User user=authentificationService.login(login.getText(),password.getText());
             if (user!=null){
                 Toolbar.setGlobalToolbar(false);

@@ -45,9 +45,10 @@ Array blocked;
                 ", description='" + description + '\'' +
                 ", periode=" + periode +
                 ", price=" + price +
-                ", image='" + image + '\'' +
+                ", category='" + category + '\'' +
                 ", state=" + state +
                 ", blocked=" + blocked +
+                ", image='" + image + '\'' +
                 '}';
     }
 

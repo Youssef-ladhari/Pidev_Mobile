@@ -37,6 +37,7 @@ import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 
 import com.pidev.SideMenuBaseForm;
+import com.pidev.entities.Category;
 import com.pidev.entities.Project;
 import com.pidev.entities.User;
 import com.pidev.gui.ShowNormalProject;
@@ -96,7 +97,10 @@ this.setScrollable(true);
         T1.add(CENTER,title);
 
         Button add = new Button("Create Project");
-        add.addActionListener((e)->new AddProject(res).show());
+        add.addActionListener((e)-> {
+            ArrayList<Category> cts=  ProjectService.getInstance().getCategory();
+            new AddProject(res, user,cts).show();
+        });
 
     T1.add(RIGHT,add);
 
