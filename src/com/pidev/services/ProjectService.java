@@ -3,18 +3,12 @@ package com.pidev.services;
 
 import com.codename1.io.*;
 import com.codename1.ui.events.ActionListener;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.pidev.entities.Category;
 import com.pidev.entities.Project;
 import com.pidev.entities.User;
 import com.pidev.utils.Statics;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
