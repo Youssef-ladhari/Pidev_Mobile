@@ -25,6 +25,7 @@ import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
 import com.pidev.entities.User;
 import com.pidev.gui.ProfileUser;
+import com.pidev.gui.Events.Event;
 import com.pidev.gui.ProjectShowAll;
 
 import java.io.IOException;
@@ -73,6 +74,7 @@ public abstract class SideMenuBaseForm extends Form {
 
 
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        getToolbar().addMaterialCommandToSideMenu("  Events", FontImage.MATERIAL_TRENDING_UP,  e -> new Event(res).show());
 
         getToolbar().addMaterialCommandToSideMenu("  Account Settings", FontImage.MATERIAL_SETTINGS,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Profile", FontImage.MATERIAL_SETTINGS,  e -> new ProfileUser(res, user).show());
