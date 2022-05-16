@@ -99,7 +99,6 @@ Button complete = new Button("Set As Complete");
                 ).add(BorderLayout.WEST, profilePicLabel),
                 GridLayout.encloseIn(2, Pricelab, Periodelab)
         );
-        System.out.println("p" + p.getUsers() + "-------000user" + user.getId());
         for (User us : p.getUsers()) {
 
             if (us.getId() == user.getId()) {
@@ -137,16 +136,16 @@ ProjectService.getInstance().Join(p.getId(),user.getId());
         if (in) {
             fab.getStyle().setBgColor(Color.RED.getRGB());
 
-            System.out.println("IFFFFFFFFFFFF");
-            } else {
+           } else {
 
                 fab.getStyle().setBgColor(Color.GREEN.getRGB());
-            System.out.println("elseeeeeeeeeeeeeeeeeeeeee");
+
             }
-            System.out.println("---+" + p.getUsers());
 
 
-            Form Tab = new Form("Collaborators", new TableLayout(p.getUsers().size(), 3));
+
+            Form Tab = new Form("Collaborators", new TableLayout(p.getUsers().size(), 1));
+
             for (User u : p.getUsers()) {
                 Container row = new Container(new BorderLayout());
 
@@ -155,7 +154,7 @@ ProjectService.getInstance().Join(p.getId(),user.getId());
 
                 b.getStyle().setFgColor(Color.RED.getRGB());
 
-                b.addPointerPressedListener((e) -> {
+                b.addActionListener((e) -> {
 
                   ProjectService.getInstance().block(user.getId(), p.getId());
 
@@ -182,7 +181,7 @@ ProjectService.getInstance().Join(p.getId(),user.getId());
                     new ShowNormalProject(res,p,user).show();
                 });
                 this.add(Ccomeplete);
-                System.out.println((user.getId()==p.getCreator().getId()) && (p.getState()==0));
+
             }
 
 

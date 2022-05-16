@@ -240,7 +240,7 @@ if (p.getPrice()==0.0){
 //        //cnt.add(line);
 //        line.setSize(new Dimension(Display.getInstance().convertToPixels(1f),Display.getInstance().convertToPixels(100f)));
         image.addActionListener((e)->{new ShowNormalProject(res,p,userr).show();
-              System.out.println("IMMMAGE");});
+              System.out.println(p.getName()+"IMMMAGE"+p.getUsers());});
 
         ReadMore.addActionListener((e)->{});
 

@@ -119,7 +119,10 @@ Tdescription.getStyle().setFgColor(Color.BLACK.getRGB());
             String vper =Tperiode.getText();
             String vpri =Tprice.getText();
             String vd =Tdescription.getText();
-
+vn="mobilw";
+vper="15";
+vpri="99";
+vd="mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm";
             if (!(vn.length()>0)){
 
                 Dialog.show("Error", "name length must be > 0", "OK", "Cancel");

@@ -41,9 +41,10 @@ Project p = new Project();
     public boolean resultOK;
     private URLConnection con ;
     private ConnectionRequest req;
-
+    private ConnectionRequest req2;
     private ProjectService() {
         req = new ConnectionRequest();
+        req2 = new ConnectionRequest();
     }
 
     public static ProjectService getInstance() {
@@ -57,29 +58,30 @@ Project p = new Project();
     public boolean addProject(Project p) {
 
         String url = Statics.BASE_URL + "project/new";
+        req2.setPost(true);
+        req2.setUrl(url);
 
-        req.setUrl(url);
-        req.addArgument("Sender", "mobile");
-        req.addArgument("name", p.getName());
+        req2.addArgument("Sender", "mobile");
+        req2.addArgument("name", p.getName());
 
-        req.addArgument("userid",""+p.getCreator().getId());
-        req.addArgument("periode",p.getPeriode().toString());
-        req.addArgument("price",""+p.getPrice());
-        System.out.println(p);
-        req.addArgument("category",""+p.getCategory().getId());
-        req.addArgument("description",p.getDescription());
-        req.addArgument("image64",p.getImage());
+        req2.addArgument("userid",""+p.getCreator().getId());
+        req2.addArgument("periode",p.getPeriode().toString());
+        req2.addArgument("price",""+p.getPrice());
+
+        req2.addArgument("category",""+p.getCategory().getId());
+        req2.addArgument("description",p.getDescription());
+        req2.addArgument("image64",p.getImage());
+        System.out.println(req2());
 
 
-
-        req.addResponseListener(new ActionListener<NetworkEvent>() {
+        req2.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
-                resultOK = req.getResponseCode() == 200; //Code HTTP 200 OK
-                req.removeResponseListener(this);
+                resultOK = req2.getResponseCode() == 200; //Code HTTP 200 OK
+                req2.removeResponseListener(this);
             }
         });
-        NetworkManager.getInstance().addToQueueAndWait(req);
+        NetworkManager.getInstance().addToQueueAndWait(req2);
         return resultOK;
     }
 
@@ -99,10 +101,12 @@ Project p = new Project();
     }
 
     public  void Join(int id,int userid){
-        //String url = Statics.BASE_URL+"/tasks/";
+
         req.setPost(true);
-        String url = Statics.BASE_URL+"project/join/"+id;
+        String url = Statics.BASE_URL+"project/joinmobile";
+        System.out.println(url);
         req.addArgument("userid",userid+"");
+        req.addArgument("projectid",id+"");
         req.setUrl(url);
 
 
@@ -168,7 +172,7 @@ Project p = new Project();
     }
     public ArrayList<Project> parseProjects(String jsonText){
         ArrayList<Project>   projs=new ArrayList<>();
-        ArrayList<User> userss = new ArrayList<>();
+
         try {
 
 
@@ -179,6 +183,7 @@ Project p = new Project();
 
             for(Map<String,Object> obj : list){
                 Project p = new Project();
+                ArrayList<User> userss = new ArrayList<>();
 
                 int i = 0 ;
 
@@ -346,7 +351,7 @@ Project p = new Project();
                 c.setName(  obj.get("name").toString());
 
                 cats.add(c);
-                System.out.println(cats);
+
             }
 
 

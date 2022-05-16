@@ -45,10 +45,10 @@ ArrayList<Integer> blocked;
                 ", description='" + description + '\'' +
                 ", periode=" + periode +
                 ", price=" + price +
-                ", category='" + category + '\'' +
+
                 ", state=" + state +
                 ", blocked=" + blocked +
-                ", image='" + image + '\'' +
+
                 '}';
     }
 

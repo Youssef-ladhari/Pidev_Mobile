@@ -1,9 +1,7 @@
 package com.pidev.gui.Events;
 
-import com.codename1.ui.Button;
-import com.codename1.ui.Form;
-import com.codename1.ui.Label;
-import com.codename1.ui.Toolbar;
+import com.codename1.components.MultiButton;
+import com.codename1.ui.*;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
 import com.pidev.SideMenuBaseForm;
@@ -17,7 +15,14 @@ public class Event extends SideMenuBaseForm {
         add(new Label("Welcome to Events "));
         setTitle(" --Events-- ");
         setLayout(BoxLayout.y());
+Container ctb = new Container();
 
+        Button menuButton = new Button();
+        menuButton.setUIID("Title");
+        FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
+        menuButton.addActionListener(e -> getToolbar().openSideMenu());
+        Container Pricelab = BoxLayout.encloseY();
+        ctb.add(menuButton);
         Button BUTAdd = new Button("Add Event");
         //Button BUTMod = new Button("Modifier Event");
         Button BUTSup = new Button("Supprimer Event");
